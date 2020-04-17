@@ -9,5 +9,12 @@ def hello(count, name):
     for x in range(count):
         click.echo('Hello %s!' % name)
 
+def list_todos():
+    """List all todos in the database."""
+    for num in range(5):
+        click.echo(f'todo #{num}')
+    
+    
+
 if __name__ == '__main__':
-    hello()
+    list_todos()
