@@ -18,7 +18,7 @@ def list():
     """List all todos in the database."""
     todos = db.all()
     for todo in todos: 
-        click.echo(todo)
+        click.echo(f"#{todo.doc_id}: {todo}")
     
 @click.command()
 @click.argument('description')
@@ -29,14 +29,18 @@ def add(description):
     click.echo(f'Inserted TODO #{doc_id}: {todo}')
 
 @click.command()
-@click.argument('todo_id')
+@click.argument('todo_id', type=int)
 def complete(todo_id):
     """Mark a todo item as completed."""
+    # breakpoint()
+    # TODO: Make sure we can't 'complete' an already-completed todo (this will mess up the metrics, since 'completed_at' will change)
+    todo = db.update({'status': Status.COMPLETED.value, 'completed_at': dt.utcnow().isoformat()}, doc_ids=[todo_id])
+    click.echo(f'Completed TODO #{todo_id}: {db.get(doc_id=3)}')
 
 
 cli.add_command(add)
 cli.add_command(list)
-
+cli.add_command(complete)
 
 if __name__ == '__main__':
     cli() 
