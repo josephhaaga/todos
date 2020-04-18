@@ -6,7 +6,6 @@ from datetime import datetime as dt
 db = TinyDB('db.json')
 
 Status = Enum('Status', 'NOT_STARTED IN_PROGRESS COMPLETED')
-# TODO: determine a way to track when status changes occur! Perhaps a [] of change events?
 # TODO: utility script to walk thru a source code directory and add these TODO comments to the database! And supplement them with info about where they were found!
 
 @click.group()
@@ -32,10 +31,12 @@ def add(description):
 @click.argument('todo_id', type=int)
 def complete(todo_id):
     """Mark a todo item as completed."""
-    # breakpoint()
-    # TODO: Make sure we can't 'complete' an already-completed todo (this will mess up the metrics, since 'completed_at' will change)
+    todo = db.get(doc_id=todo_id)
+    if 'completed_at' in todo:
+        click.echo(f'TODO #{todo_id} was already completed at {todo["completed_at"]}')
+        return False
     todo = db.update({'status': Status.COMPLETED.value, 'completed_at': dt.utcnow().isoformat()}, doc_ids=[todo_id])
-    click.echo(f'Completed TODO #{todo_id}: {db.get(doc_id=3)}')
+    click.echo(f'Completed TODO #{todo_id}: {db.get(doc_id=todo_id)}')
 
 
 cli.add_command(add)
