@@ -6,13 +6,11 @@ from datetime import datetime as dt
 db = TinyDB("db.json")
 
 Status = Enum("Status", "NOT_STARTED IN_PROGRESS COMPLETED")
-# TODO: utility script to walk thru a source code directory and add these TODO comments to the database! And supplement them with info about where they were found!
 
 
 @click.group()
 def cli():
     pass
-
 
 @click.command()
 def list():
@@ -20,7 +18,6 @@ def list():
     todos = db.all()
     for todo in todos:
         click.echo(f"#{todo.doc_id}: {todo}")
-
 
 @click.command()
 @click.argument("description")
@@ -47,7 +44,6 @@ def start(todo_id):
         doc_ids=[todo_id],
     )
     click.echo(f"Started TODO #{todo_id}: {db.get(doc_id=todo_id)}")
-
 
 @click.command()
 @click.argument("todo_id", type=int)
