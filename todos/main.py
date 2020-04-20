@@ -13,20 +13,33 @@ def cli():
     pass
 
 @click.command()
-def list():
+@click.option('--all', 'status', flag_value='ALL', default=True)
+@click.option('--not-started', 'status', flag_value='NOT_STARTED')
+@click.option('--in-progress', 'status', flag_value='IN_PROGRESS')
+@click.option('--completed', 'status', flag_value='COMPLETED')
+@click.option('-t', '--tag', 'tag',  default=False)
+def list(status, tag=False):
     """List all todos in the database."""
-    todos = db.all()
+    click.echo(f"Searching for todos with status: {status} and tag: {tag}")
+    contains_tag = lambda tags: (tag in tags) if tag else True
+    # contains_tag = lambda tags: len(tags) > 0
+    status_matches = lambda todo_status: True if status == 'ALL' else todo_status == Status[status].value
+
+    Todo = Query()
+    todos = db.search((Todo.status.test(status_matches)) & (Todo.tags.test(contains_tag)))
     for todo in todos:
         click.echo(f"#{todo.doc_id}: {todo}")
 
 @click.command()
 @click.argument("description")
-def add(description):
+@click.option('-t', '--tags')
+def add(description, tags=[]):
     """Add a todo item to the database."""
     todo = {
         "description": description,
         "inserted_at": dt.utcnow().isoformat(),
         "status": Status.NOT_STARTED.value,
+        "tags": tags.split(",") if tags else []
     }
     doc_id = db.insert(todo)
     click.echo(f"Inserted TODO #{doc_id}: {todo}")
