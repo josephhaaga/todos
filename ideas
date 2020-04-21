@@ -1,6 +1,9 @@
 Add instance directory so users can list/add todos from anywhere (e.g. ~/.todos)
     * See "Python Quickstart | Calendar API | Google Developers" page for example on elegantly handling/creating this application directory
 
+fix timezone info for started_at, completed_at, and inserted_at
+    * currently using a different timezone; or consider UTC time?
+
 utility script to walk thru a source code directory and add these TODO comments to the database! And supplement them with info about where they were found!
 
 function to view current status (e.g. timer showing elapsed time on IN_PROGRESS todos)
