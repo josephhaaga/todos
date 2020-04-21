@@ -1,4 +1,5 @@
 Add instance directory so users can list/add todos from anywhere (e.g. ~/.todos)
+    * See "Python Quickstart | Calendar API | Google Developers" page for example on elegantly handling/creating this application directory
 
 utility script to walk thru a source code directory and add these TODO comments to the database! And supplement them with info about where they were found!
 
