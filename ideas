@@ -1,6 +1,15 @@
 Add instance directory so users can list/add todos from anywhere (e.g. ~/.todos)
     * See "Python Quickstart | Calendar API | Google Developers" page for example on elegantly handling/creating this application directory
 
+add generate_report(date) to summarize tasks worked on in a given day, to make JIRA time logs easier
+
+add statistics
+    * is there a good
+
+add fill_calendar functionality
+    * suggest how-best to allocate my time
+    * estimate what date I will complete all my todo items 
+
 fix timezone info for started_at, completed_at, and inserted_at
     * currently using a different timezone; or consider UTC time?
 
