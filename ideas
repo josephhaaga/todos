@@ -9,6 +9,7 @@ add statistics
 add fill_calendar functionality
     * suggest how-best to allocate my time
     * estimate what date I will complete all my todo items 
+    * group semantically similar items (e.g. "work on OneDash" should occur right before "OneDash Office Hours" so it's fresh in my head, and to minimize "switching gears")
 
 fix timezone info for started_at, completed_at, and inserted_at
     * currently using a different timezone; or consider UTC time?
