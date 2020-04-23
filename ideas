@@ -21,3 +21,7 @@ function to view current status (e.g. timer showing elapsed time on IN_PROGRESS 
 lowercase all tags and convert spaces into dashes (to standardize tags)
 
 Add ability to list available tags
+
+todo list should default to in-progress
+        * --all flag option should allow users to view all todos
+
