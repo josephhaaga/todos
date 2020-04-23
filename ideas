@@ -25,3 +25,6 @@ Add ability to list available tags
 todo list should default to in-progress
         * --all flag option should allow users to view all todos
 
+
+I should be able to pipe long-running command results to a Slack message
+    * e.g. Slack the output of Nimbus deploy to San/Krishna without requiring me to watch the terminal and use Slack manually
