@@ -35,8 +35,13 @@ def list(status, tag=False):
         (Todo.status.test(status_matches)) & (Todo.tags.test(contains_tag))
     )
     for todo in todos:
-        click.echo(f"#{todo.doc_id}: {todo}")
+        click.echo(f"#{todo.doc_id}: {format_pretty_todo(todo)}")
 
+def format_pretty_todo(todo):
+    return (
+        f'{todo["description"]}'
+        f'\t{" ".join(todo["tags"])}'
+    )
 
 @click.command()
 @click.argument("description")
