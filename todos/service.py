@@ -1,4 +1,5 @@
 from datetime import datetime as dt
+import pytz
 
 class TodoService:
     storage = None
@@ -28,7 +29,9 @@ class TodoService:
         """Start working on a Todo."""
         # This should add a new dict to a list called time_logged
         # e.g. {'start_time': now, }
-        pass
+        now = dt.utcnow().isoformat()
+        updated_id = self.storage.update(todo_id, {'started_at': now})
+        return updated_id
 
     def stop(self, todo_id):
         # This should update the 'end_time' of the last dict in the time_logged list.
@@ -39,7 +42,9 @@ class TodoService:
         # call self.stop(todo_id)
         # set completed_at to now
         # update status
-        pass
+        now = dt.utcnow().isoformat()
+        updated_id = self.storage.update(todo_id, {'completed_at': now})
+        return updated_id
 
     def delete(self, todo_id):
         """Delete a Todo."""

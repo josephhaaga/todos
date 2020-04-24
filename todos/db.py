@@ -17,7 +17,7 @@ class Database:
         """Retrieve an item from the database."""
         return db.get(doc_id=document_id)
 
-    def update(updates_to_make: dict, document_id: int):
+    def update(document_id: int, updates_to_make: dict):
         """Update an item in the database."""
         return db.update(updates_to_make, doc_ids=[document_id])
 

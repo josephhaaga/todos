@@ -9,8 +9,13 @@ class MockDB:
 
     def create(self, item_description, item_tags=[]):
         self.items += [{'description': item_description, 'tags': item_tags}]
-        print(f"self.items: {str(self.items)}")
         return len(self.items)
+
+    def update(self, item_id, changes):
+        item = self.items[item_id - 1]
+        self.items[item_id - 1] = {**item, **changes}
+        print(f"self.items: {str(self.items)}")
+        return item_id
 
     def delete(self, item_id):
         del self.items[item_id - 1]
