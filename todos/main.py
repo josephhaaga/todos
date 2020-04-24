@@ -19,7 +19,7 @@ def cli():
 @click.option("--in-progress", "status", flag_value="IN_PROGRESS")
 @click.option("--completed", "status", flag_value="COMPLETED")
 @click.option("-t", "--tag", "tag", default=False)
-def list(status, tag=False):
+def show(status, tag=False):
     """List all todos in the database."""
     click.echo(f"Searching for todos with status: {status} and tag: {tag}")
     contains_tag = lambda tags: (tag in tags) if tag else True
@@ -91,7 +91,7 @@ def complete(todo_id):
 
 
 cli.add_command(add)
-cli.add_command(list)
+cli.add_command(show)
 cli.add_command(start)
 cli.add_command(complete)
 
