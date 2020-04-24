@@ -30,3 +30,8 @@ class TestTodoService:
         service = TodoService(MockDB([{'description': 'some task'}]))
         service.start(1)
         assert 'started_at' in service.storage.items[0]
+
+    def test_complete(self):
+        service = TodoService(MockDB([{'description': 'some task'}]))
+        service.complete(1)
+        assert 'completed_at' in service.storage.items[0]
