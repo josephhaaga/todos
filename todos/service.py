@@ -16,13 +16,13 @@ class TodoService:
         print(f"Created Todo #{todo_id}") 
         return todo_id
 
-    def add_tag(self, todo_id):
-        """Add a tag to a Todo."""
-        pass
-
-    def remove_tag(self, todo_id):
-        """Remove a tag from a Todo."""
-        pass
+#    def add_tag(self, todo_id):
+#        """Add a tag to a Todo."""
+#        pass
+#
+#    def remove_tag(self, todo_id):
+#        """Remove a tag from a Todo."""
+#        pass
 
     def start(self, todo_id):
         """Start working on a Todo."""
@@ -36,6 +36,9 @@ class TodoService:
 
     def complete(self, todo_id):
         """Finish working on a Todo."""
+        # call self.stop(todo_id)
+        # set completed_at to now
+        # update status
         pass
 
     def delete(self, todo_id):
