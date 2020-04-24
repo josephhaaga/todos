@@ -1,3 +1,5 @@
+Active Todos should blink (via colorterm)
+
 Add instance directory so users can list/add todos from anywhere (e.g. ~/.todos)
     * See "Python Quickstart | Calendar API | Google Developers" page for example on elegantly handling/creating this application directory
 
