@@ -12,6 +12,16 @@ class TodoService:
     def __init__(self, storage):
         self.storage = storage
 
+    def list(self, status: str = None, tag: str = None):
+        # TODO change args into **kwargs? less descriptive, but we could eliminate the dict(filter()) lines
+        """List Todos."""
+        todos = None
+        if not status and not tag:
+            return self.storage.list()
+        args = {'status': status, 'tag': tag}
+        conditions = dict(filter(lambda x: x[1] is not None, args.items()))
+        return self.storage.find(conditions)
+
     def create(self, description=None, tags=[]):
         """Create a Todo."""
         todo = {
