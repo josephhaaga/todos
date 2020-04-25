@@ -39,3 +39,7 @@ Add a Tags collection so we can persist Tag foreground/background colors
 
 Get more ideas from todotxt
     * http://todotxt.org/
+
+follow best practices for Click apps
+    * https://dbader.org/blog/mastering-click-advanced-python-command-line-apps
+    * store config in a file
