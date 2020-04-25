@@ -1,6 +1,7 @@
 from tinydb import TinyDB, Query, where
 from functools import reduce
 
+
 class Database:
     db = TinyDB("db.json")
 

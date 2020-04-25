@@ -37,13 +37,12 @@ def show(status, tag=False):
     for todo in todos:
         click.echo(f"#{todo.doc_id}: {format_pretty_todo(todo)}")
 
+
 def format_pretty_todo(todo):
     # TODO create a Tags collection so we can assign foreground/background colors to tags
-    tags_with_background_colors = ["#"+tag for tag in todo['tags']]
-    return (
-        f'{todo["description"]}'
-        f'\t{" ".join(tags_with_background_colors)}'
-    )
+    tags_with_background_colors = ["#" + tag for tag in todo["tags"]]
+    return f'{todo["description"]}' f'\t{" ".join(tags_with_background_colors)}'
+
 
 @click.command()
 @click.argument("description")

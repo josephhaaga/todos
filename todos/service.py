@@ -1,22 +1,28 @@
 from datetime import datetime as dt
 import pytz
+from enum import Enum
+
+
+Status = Enum("Status", "NOT_STARTED IN_PROGRESS COMPLETED")
+
 
 class TodoService:
     storage = None
+
     def __init__(self, storage):
         self.storage = storage
 
     def create(self, description=None, tags=[]):
         """Create a Todo."""
         todo = {
-            'description': description,
-            'inserted_at': dt.utcnow().isoformat(),
-            'tags': tags
+            "description": description,
+            "inserted_at": dt.utcnow().isoformat(),
+            "status": Status.NOT_STARTED.value,
+            "tags": tags,
         }
         todo_id = self.storage.create(todo)
-        print(f"Created Todo #{todo_id}") 
+        print(f"Created Todo #{todo_id}")
         return todo_id
-
 
     def delete(self, todo_id):
         """Delete a Todo."""
@@ -24,20 +30,22 @@ class TodoService:
         print(f"Removed Todo #{todo_id}")
         return todo_id
 
-#    def add_tag(self, todo_id):
-#        """Add a tag to a Todo."""
-#        pass
-#
-#    def remove_tag(self, todo_id):
-#        """Remove a tag from a Todo."""
-#        pass
+    #    def add_tag(self, todo_id):
+    #        """Add a tag to a Todo."""
+    #        pass
+    #
+    #    def remove_tag(self, todo_id):
+    #        """Remove a tag from a Todo."""
+    #        pass
 
     def start(self, todo_id):
         """Start working on a Todo."""
         # This should add a new dict to a list called time_logged
         # e.g. {'start_time': now, }
         now = dt.utcnow().isoformat()
-        updated_id = self.storage.update(todo_id, {'started_at': now})
+        updated_id = self.storage.update(
+            todo_id, {"started_at": now, "status": Status.IN_PROGRESS.value}
+        )
         return updated_id
 
     def stop(self, todo_id):
@@ -50,5 +58,7 @@ class TodoService:
         # set completed_at to now
         # update status
         now = dt.utcnow().isoformat()
-        updated_id = self.storage.update(todo_id, {'completed_at': now})
+        updated_id = self.storage.update(
+            todo_id, {"completed_at": now, "status": Status.COMPLETED.value}
+        )
         return updated_id

@@ -1,14 +1,15 @@
 import pytest
 from todos.service import TodoService
 
+
 class MockDB:
-    items = [] 
-    
+    items = []
+
     def __init__(self, items=[]):
         self.items = items
 
     def create(self, item_description, item_tags=[]):
-        self.items += [{'description': item_description, 'tags': item_tags}]
+        self.items += [{"description": item_description, "tags": item_tags}]
         return len(self.items)
 
     def update(self, item_id, changes):
@@ -20,13 +21,14 @@ class MockDB:
         del self.items[item_id - 1]
         return item_id
 
+
 class TestTodoService:
-    example_task = {'description': 'some example task'}
-    
+    example_task = {"description": "some example task"}
+
     def test_create(self):
         service = TodoService(MockDB())
         assert service.create(description="Some todo") == 1
-    
+
     def test_delete(self):
         service = TodoService(MockDB([example_task]))
         assert service.delete(1) == 1
@@ -34,10 +36,9 @@ class TestTodoService:
     def test_start(self):
         service = TodoService(MockDB([example_task]))
         service.start(1)
-        assert 'started_at' in service.storage.items[0]
+        assert "started_at" in service.storage.items[0]
 
     def test_complete(self):
         service = TodoService(MockDB([example_task]))
         service.complete(1)
-        assert 'completed_at' in service.storage.items[0]
-
+        assert "completed_at" in service.storage.items[0]
