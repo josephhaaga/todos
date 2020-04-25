@@ -17,6 +17,13 @@ class TodoService:
         print(f"Created Todo #{todo_id}") 
         return todo_id
 
+
+    def delete(self, todo_id):
+        """Delete a Todo."""
+        self.storage.delete(todo_id)
+        print(f"Removed Todo #{todo_id}")
+        return todo_id
+
 #    def add_tag(self, todo_id):
 #        """Add a tag to a Todo."""
 #        pass
@@ -45,9 +52,3 @@ class TodoService:
         now = dt.utcnow().isoformat()
         updated_id = self.storage.update(todo_id, {'completed_at': now})
         return updated_id
-
-    def delete(self, todo_id):
-        """Delete a Todo."""
-        self.storage.delete(todo_id)
-        print(f"Removed Todo #{todo_id}")
-        return todo_id

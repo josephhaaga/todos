@@ -14,7 +14,6 @@ class MockDB:
     def update(self, item_id, changes):
         item = self.items[item_id - 1]
         self.items[item_id - 1] = {**item, **changes}
-        print(f"self.items: {str(self.items)}")
         return item_id
 
     def delete(self, item_id):
@@ -22,21 +21,23 @@ class MockDB:
         return item_id
 
 class TestTodoService:
+    example_task = {'description': 'some example task'}
     
     def test_create(self):
         service = TodoService(MockDB())
         assert service.create(description="Some todo") == 1
     
     def test_delete(self):
-        service = TodoService(MockDB([{'description': 'task'}]))
+        service = TodoService(MockDB([example_task]))
         assert service.delete(1) == 1
 
     def test_start(self):
-        service = TodoService(MockDB([{'description': 'some task'}]))
+        service = TodoService(MockDB([example_task]))
         service.start(1)
         assert 'started_at' in service.storage.items[0]
 
     def test_complete(self):
-        service = TodoService(MockDB([{'description': 'some task'}]))
+        service = TodoService(MockDB([example_task]))
         service.complete(1)
         assert 'completed_at' in service.storage.items[0]
+
