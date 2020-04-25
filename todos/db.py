@@ -17,6 +17,7 @@ class Database:
         """Search the database for items matching a set of criteria."""
         if len(clauses) == 0:
             return self.list()
+        # TODO: support operators other than ==
         terms = [where(key) == val for key, val in clauses.items()]
         built_query = reduce(lambda a, b: a & b, terms)
         return self.db.search(built_query)
