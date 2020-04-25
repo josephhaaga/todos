@@ -1,26 +1,34 @@
-from tinydb import TinyDB, Query
-
+from tinydb import TinyDB, Query, where
+from functools import reduce
 
 class Database:
     db = TinyDB("db.json")
 
-    def create(item: dict):
+    def create(self, item: dict):
         """Insert an item into the database."""
-        document_id = db.insert(item)
+        document_id = self.db.insert(item)
         return document_id
 
-    def find():
+    def list(self):
+        """Return all items in the database."""
+        return self.db.all()
+
+    def find(self, clauses: dict):
         """Search the database for items matching a set of criteria."""
-        return db.search()
+        if len(clauses) == 0:
+            return self.list()
+        terms = [where(key) == val for key, val in clauses.items()]
+        built_query = reduce(lambda a, b: a & b, terms)
+        return self.db.search(built_query)
 
-    def get(document_id: int):
+    def get(self, document_id: int):
         """Retrieve an item from the database."""
-        return db.get(doc_id=document_id)
+        return self.db.get(doc_id=document_id)
 
-    def update(document_id: int, updates_to_make: dict):
+    def update(self, document_id: int, updates_to_make: dict):
         """Update an item in the database."""
-        return db.update(updates_to_make, doc_ids=[document_id])
+        return self.db.update(updates_to_make, doc_ids=[document_id])
 
-    def delete(document_id: int):
+    def delete(self, document_id: int):
         """Remove an item from the database."""
-        return db.remove(doc_ids=[document_id])
+        return self.db.remove(doc_ids=[document_id])
