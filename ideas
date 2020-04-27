@@ -38,3 +38,10 @@ Add a 'todo next' command to tell me the next task I should be working on
 Add a Tags collection so we can persist Tag foreground/background colors
 
 Add time-tracking/hour-logging functionality behind a feature flag
+
+Get more ideas from todotxt
+    * http://todotxt.org/
+
+follow best practices for Click apps
+    * https://dbader.org/blog/mastering-click-advanced-python-command-line-apps
+    * store config in a file

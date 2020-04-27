@@ -1,8 +1,12 @@
 from tinydb import TinyDB, Query, where
 from functools import reduce
 
+
 class Database:
-    db = TinyDB("db.json")
+    db = None 
+
+    def __init__(self, engine=TinyDB("db.json")):
+        self.db = engine
 
     def create(self, item: dict):
         """Insert an item into the database."""
