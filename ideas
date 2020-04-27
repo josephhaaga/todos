@@ -36,3 +36,5 @@ I should be able to pipe long-running command results to a Slack message
 Add a 'todo next' command to tell me the next task I should be working on 
 
 Add a Tags collection so we can persist Tag foreground/background colors
+
+Add time-tracking/hour-logging functionality behind a feature flag
