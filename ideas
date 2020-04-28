@@ -3,8 +3,12 @@ Database class should allow us to dynamically construct queries (https://stackov
 
 Active Todos should blink (via colorterm)
 
-Add instance directory so users can list/add todos from anywhere (e.g. ~/.todos)
+!! Add instance directory so users can list/add todos from anywhere (e.g. ~/.todos)
     * See "Python Quickstart | Calendar API | Google Developers" page for example on elegantly handling/creating this application directory
+    * THIS IS ANNOYING - ADDING TODOS from other directories creates a new db.json in that directory!
+
+
+`note "Here is a note about the task I'm currently working on"` should attach a note to that task object in the db
 
 add generate_report(date) to summarize tasks worked on in a given day, to make JIRA time logs easier
 
