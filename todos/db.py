@@ -5,8 +5,8 @@ from functools import reduce
 class Database:
     db = None 
 
-    def __init__(self, engine=TinyDB("db.json")):
-        self.db = engine
+    def __init__(self, path_to_database_file = "db.json"):
+        self.db = TinyDB(path_to_database_file)
 
     def create(self, item: dict):
         """Insert an item into the database."""

@@ -9,8 +9,11 @@ from db import Database
 
 import click
 
+# Create or open instance folder, and pass to Database 
 
-service = TodoService(Database())
+path_to_db_file = "./db.json"
+
+service = TodoService(Database(path_to_db_file))
 
 @click.group()
 def cli():
