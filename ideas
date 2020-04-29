@@ -3,6 +3,8 @@ Database class should allow us to dynamically construct queries (https://stackov
 
 Active Todos should blink (via colorterm)
 
+When a dependency is completed, the downstream tasks should get Scheduled/added to my Today list
+
 !! Add instance directory so users can list/add todos from anywhere (e.g. ~/.todos)
     * See "Python Quickstart | Calendar API | Google Developers" page for example on elegantly handling/creating this application directory
     * THIS IS ANNOYING - ADDING TODOS from other directories creates a new db.json in that directory!
