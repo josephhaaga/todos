@@ -1,6 +1,8 @@
 Database class should allow us to dynamically construct queries (https://stackoverflow.com/a/30531801)
     * Service should be able to construct whatever query it wants, without having to import any tinydb classes (e.g. Query, where)
 
+Add current TODO to a status bar on zsh?
+
 Use `tabulate` library to ensure that tags print in a constent place (hard to read currently)
 
 Active Todos should blink (via colorterm)
