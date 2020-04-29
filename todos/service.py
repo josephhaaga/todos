@@ -1,7 +1,7 @@
 from datetime import datetime as dt
 import pytz
 from enum import Enum
-
+from models import Todo
 
 Status = Enum("Status", "NOT_STARTED IN_PROGRESS COMPLETED")
 
@@ -17,10 +17,12 @@ class TodoService:
         """List Todos."""
         todos = None
         if not status and not tag:
-            return self.storage.list()
+            todos = self.storage.list()
+            return [Todo(**item) for item in todos]
         args = {'status': status, 'tag': tag}
         conditions = dict(filter(lambda x: x[1] is not None, args.items()))
-        return self.storage.find(conditions)
+        todos = self.storage.find(conditions)
+        return [Todo(**item) for item in todos]
 
     def create(self, description=None, tags=[]):
         """Create a Todo."""
@@ -39,14 +41,6 @@ class TodoService:
         self.storage.delete(todo_id)
         print(f"Removed Todo #{todo_id}")
         return todo_id
-
-    #    def add_tag(self, todo_id):
-    #        """Add a tag to a Todo."""
-    #        pass
-    #
-    #    def remove_tag(self, todo_id):
-    #        """Remove a tag from a Todo."""
-    #        pass
 
     def start(self, todo_id):
         """Start working on a Todo."""

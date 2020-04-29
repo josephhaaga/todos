@@ -20,7 +20,7 @@ Path(app_instance_directory).mkdir(parents=True, exist_ok=True)
 
 path_to_db_file = path.join(app_instance_directory, 'db.json') 
 print(f"Starting app with JSON in {path_to_db_file}")
-service = TodoService(Database(path_to_db_file))
+todo_service = TodoService(Database(path_to_db_file))
 
 @click.group()
 def cli():
@@ -32,15 +32,17 @@ def cli():
 @click.option("--in-progress", "status", flag_value="IN_PROGRESS")
 @click.option("--completed", "status", flag_value="COMPLETED")
 def show(status, tag=None):
-    todos = service.list(status, tag)
-    print(todos)
+    todos = todo_service.list(status, tag)
+    breakpoint()
+    for todo in todos:
+        print(todo)
 
 @click.command()
 @click.argument("description")
 @click.option("-t", "--tags")
 def add(description, tags=[]):
     """Add a todo item to the database."""
-    doc_id = service.create(description, tags) 
+    doc_id = todo_service.create(description, tags) 
     click.echo(f"Inserted TODO #{doc_id}: {description}")
 
 
