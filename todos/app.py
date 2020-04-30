@@ -33,7 +33,6 @@ def cli():
 @click.option("--completed", "status", flag_value="COMPLETED")
 def show(status, tag=None):
     todos = todo_service.list(status, tag)
-    breakpoint()
     for todo in todos:
         print(todo)
 

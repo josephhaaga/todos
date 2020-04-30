@@ -18,11 +18,11 @@ class TodoService:
         todos = None
         if not status and not tag:
             todos = self.storage.list()
-            return [Todo(**item) for item in todos]
+            return [Todo(id=item.doc_id, **item) for item in todos]
         args = {'status': status, 'tag': tag}
         conditions = dict(filter(lambda x: x[1] is not None, args.items()))
         todos = self.storage.find(conditions)
-        return [Todo(**item) for item in todos]
+        return [Todo(id=item.doc_id, **item) for item in todos]
 
     def create(self, description=None, tags=[]):
         """Create a Todo."""

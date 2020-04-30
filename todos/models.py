@@ -5,8 +5,8 @@ class Todo:
             setattr(self, key, value)
 
     def __repr__(self):
-        return f"{self.description} – {self.tags}"
+        return f"#{self.id}: {self.description} – {self.tags}"
    
     def __str__(self):
-        return f"{self.description} – {self.tags}"
+        return f"#{self.id}: {self.description} – {self.tags}"
 
