@@ -34,7 +34,7 @@ def cli():
 def show(status, tag=None):
     todos = todo_service.list(status, tag)
     for todo in todos:
-        print(todo)
+        click.echo(todo)
 
 @click.command()
 @click.argument("description")
@@ -44,9 +44,17 @@ def add(description, tags=[]):
     doc_id = todo_service.create(description, tags) 
     click.echo(f"Inserted TODO #{doc_id}: {description}")
 
+@click.command()
+@click.argument("todo_id")
+def start(todo_id):
+    """Start working on a todo item."""
+    started_todo = todo_service.start(todo_id)
+    click.echo(f"Started {started_todo}")
+
 
 cli.add_command(show)
 cli.add_command(add)
+cli.add_command(start)
 
 if __name__ == "__main__":
     cli()

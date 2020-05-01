@@ -1,7 +1,6 @@
 from tinydb import TinyDB, Query, where
 from functools import reduce
 
-
 class Database:
     db = None 
 
@@ -28,10 +27,13 @@ class Database:
 
     def get(self, document_id: int):
         """Retrieve an item from the database."""
+        document_id = int(document_id)
         return self.db.get(doc_id=document_id)
 
     def update(self, document_id: int, updates_to_make: dict):
         """Update an item in the database."""
+        breakpoint()
+        document_id = int(document_id)
         return self.db.update(updates_to_make, doc_ids=[document_id])
 
     def delete(self, document_id: int):
