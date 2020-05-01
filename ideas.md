@@ -5,20 +5,22 @@ Sort these ideas into:
 Sort ideas by expected lift
     * larger efforts should be `feat/` branches, and I should perform code reviews to prevent quality degredation (which is currently biting me in the ass)
 
+# Project Structure
 
 Database class should allow us to dynamically construct queries (https://stackoverflow.com/a/30531801)
     * Service should be able to construct whatever query it wants, without having to import any tinydb classes (e.g. Query, where)
+
+
+# Usability
 
 Add current TODO to a status bar on zsh?
 
 Use `tabulate` library to ensure that tags print in a constent place (hard to read currently)
 
+
+# Features
+
 When a dependency is completed, the downstream tasks should get Scheduled/added to my Today list
-
-!! Add instance directory so users can list/add todos from anywhere (e.g. ~/.todos)
-    * See "Python Quickstart | Calendar API | Google Developers" page for example on elegantly handling/creating this application directory
-    * THIS IS ANNOYING - ADDING TODOS from other directories creates a new db.json in that directory!
-
 
 `note "Here is a note about the task I'm currently working on"` should attach a note to that task object in the db
 
