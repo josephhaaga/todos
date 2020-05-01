@@ -45,16 +45,34 @@ def add(description, tags=[]):
     click.echo(f"Inserted TODO #{doc_id}: {description}")
 
 @click.command()
-@click.argument("todo_id")
+@click.argument("todo_id", type=int)
 def start(todo_id):
     """Start working on a todo item."""
     started_todo = todo_service.start(todo_id)
     click.echo(f"Started {started_todo}")
 
+@click.command()
+@click.argument("todo_id", type=int)
+def complete(todo_id):
+    """Finish working on a todo item."""
+    finished_todo = todo_service.complete(todo_id)
+    click.echo(f"Finished {finished_todo}")
+
+@click.command()
+@click.argument("todo_id", type=int)
+def delete(todo_id):
+    """Delete a todo item."""
+    result = todo_service.delete(todo_id)
+    if result:
+        click.echo(f"Successfully deleted.")
+    else:
+        click.echo(f"Error occurred while deleting {todo_id}")
 
 cli.add_command(show)
 cli.add_command(add)
 cli.add_command(start)
+cli.add_command(complete)
+cli.add_command(delete)
 
 if __name__ == "__main__":
     cli()

@@ -49,12 +49,17 @@ class TodoService:
         now = dt.utcnow().isoformat()
         updated_id = self.storage.update(
             todo_id, {"started_at": now, "status": Status.IN_PROGRESS.value}
-        )[0]
+        )
         return Todo(id=updated_id, **self.storage.get(updated_id))
 
     def stop(self, todo_id):
         # This should update the 'end_time' of the last dict in the time_logged list.
         """Stop working on a Todo."""
+
+    def delete(self, todo_id):
+        """Delete a Todo from the db."""
+        self.storage.delete(todo_id)
+        return True 
 
     def complete(self, todo_id):
         """Finish working on a Todo."""
@@ -65,4 +70,4 @@ class TodoService:
         updated_id = self.storage.update(
             todo_id, {"completed_at": now, "status": Status.COMPLETED.value}
         )
-        return updated_id
+        return Todo(id=updated_id, **self.storage.get(updated_id))

@@ -27,15 +27,16 @@ class Database:
 
     def get(self, document_id: int):
         """Retrieve an item from the database."""
-        document_id = int(document_id)
+        # document_id = int(document_id)
         return self.db.get(doc_id=document_id)
 
     def update(self, document_id: int, updates_to_make: dict):
         """Update an item in the database."""
-        breakpoint()
-        document_id = int(document_id)
-        return self.db.update(updates_to_make, doc_ids=[document_id])
+        # document_id = int(document_id)
+        updated_doc_ids = self.db.update(updates_to_make, doc_ids=[document_id])
+        return updated_doc_ids[0]
 
     def delete(self, document_id: int):
         """Remove an item from the database."""
+        # document_id = int(document_id)
         return self.db.remove(doc_ids=[document_id])
