@@ -5,8 +5,6 @@ Add current TODO to a status bar on zsh?
 
 Use `tabulate` library to ensure that tags print in a constent place (hard to read currently)
 
-Active Todos should blink (via colorterm)
-
 When a dependency is completed, the downstream tasks should get Scheduled/added to my Today list
 
 !! Add instance directory so users can list/add todos from anywhere (e.g. ~/.todos)
