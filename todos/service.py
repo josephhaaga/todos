@@ -13,14 +13,13 @@ class TodoService:
         self.storage = storage
 
     def list(self, status: str = None, tag: str = None):
-        # TODO change args into **kwargs? less descriptive, but we could eliminate the dict(filter()) lines
         """List Todos."""
         todos = None
         if not status and not tag:
             todos = self.storage.list()
             return [Todo(id=item.doc_id, **item) for item in todos]
-        args = {'status': status, 'tag': tag}
-        conditions = dict(filter(lambda x: x[1] is not None, args.items()))
+        args = {'status': Status[status].value, 'tag': tag}
+        conditions = {k: v for k, v in args.items() if v is not None}
         todos = self.storage.find(conditions)
         return [Todo(id=item.doc_id, **item) for item in todos]
 

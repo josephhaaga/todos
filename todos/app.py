@@ -19,7 +19,6 @@ app_instance_directory = path.join(home, '.todos')
 Path(app_instance_directory).mkdir(parents=True, exist_ok=True)
 
 path_to_db_file = path.join(app_instance_directory, 'db.json') 
-print(f"Starting app with JSON in {path_to_db_file}")
 todo_service = TodoService(Database(path_to_db_file))
 
 @click.group()

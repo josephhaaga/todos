@@ -22,6 +22,8 @@ Use `tabulate` library to ensure that tags print in a constent place (hard to re
 
 lowercase all tags and convert spaces into dashes (to standardize tags)
 
+If I'm only working on one task, then `todo complete` should automatically complete that task without having to pass in an ID
+
 # Features
 
 When a dependency is completed, the downstream tasks should get Scheduled/added to my Today list
