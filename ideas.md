@@ -1,7 +1,6 @@
 Sort ideas by expected lift
     * larger efforts should be `feat/` branches, and I should perform code reviews to prevent quality degredation (which is currently biting me in the ass)
 
-
 # Project Structure
 
 Database class should allow us to dynamically construct queries (https://stackoverflow.com/a/30531801)
@@ -21,6 +20,7 @@ Add current TODO to a status bar on zsh?
 Use `tabulate` library to ensure that tags print in a constent place (hard to read currently)
 
 lowercase all tags and convert spaces into dashes (to standardize tags)
+    * we probably need a utils module for this function, as well as printing, formatting, etc.
 
 If I'm only working on one task, then `todo complete` should automatically complete that task without having to pass in an ID
 
