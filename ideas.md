@@ -27,6 +27,7 @@ If I'm only working on one task, then `todo complete` should automatically compl
 # Features
 
 `todo start` should also accept a string, so users can add & start a task in one command
+    * starting a todo with the `feat` tag should create a new branch!
 
 `todo next` will suggest a Todo, and users can respond Y or N
     * if Y, that task will be started
