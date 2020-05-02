@@ -32,7 +32,7 @@ def create_app():
     def show(status, tag=None):
         todos = todo_service.list(status, tag)
         for todo in todos:
-            click.echo(todo)
+            click.echo(todo.short_description())
 
     @click.command()
     @click.argument("description")
@@ -78,6 +78,8 @@ def create_app():
             click.echo(f"Successfully deleted.")
         else:
             click.echo(f"Error occurred while deleting {todo_id}")
+
+        click.echo()
 
     cli.add_command(show)
     cli.add_command(add)

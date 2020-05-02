@@ -47,7 +47,7 @@ class TodoService:
         # e.g. {'start_time': now, }
         now = dt.utcnow().isoformat()
         updated_id = self.storage.update(
-            todo_id, {"started_at": now, "status": Status.IN_PROGRESS.value}
+            str(todo_id), {"started_at": now, "status": Status.IN_PROGRESS.value}
         )
         return Todo(id=updated_id, **self.storage.get(updated_id))
 
