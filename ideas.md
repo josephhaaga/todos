@@ -26,6 +26,8 @@ If I'm only working on one task, then `todo complete` should automatically compl
 
 # Features
 
+`todo start` should also accept a string, so users can add & start a task in one command
+
 `todo next` will suggest a Todo, and users can respond Y or N
     * if Y, that task will be started
     * if N, recommend the next task
