@@ -41,6 +41,19 @@ def create_app():
         """Add a todo item to the database."""
         doc_id = todo_service.create(description, tags) 
         click.echo(f"Inserted TODO #{doc_id}: {description}")
+    
+    @click.command()
+    def then():
+        """Suggest tasks to a user, starting a todo if they respond Y."""
+        # TODO warn user that they have IN_PROGRESS tasks. "Finish what you've already started!"
+        not_started_todos = todo_service.list("NOT_STARTED")
+        for task in not_started_todos:
+            response = True if input(f"Start {task}? (Y/N) ") == 'Y' else False
+            if response:
+                # TODO tech debt
+                start(str(task.id))
+                return True
+        pass
 
     @click.command()
     @click.argument("todo_id", type=int)
@@ -68,6 +81,7 @@ def create_app():
 
     cli.add_command(show)
     cli.add_command(add)
+    cli.add_command(then)
     cli.add_command(start)
     cli.add_command(complete)
     cli.add_command(delete)

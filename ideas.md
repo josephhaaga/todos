@@ -33,6 +33,7 @@ If I'm only working on one task, then `todo complete` should automatically compl
     * if Y, that task will be started
     * if N, recommend the next task
     * if D, delete the task
+    * renaming this to `then`, since `next` is a reserved word in Python
 
 When a dependency is completed, the downstream tasks should get Scheduled/added to my Today list
 
