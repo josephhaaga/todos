@@ -26,6 +26,11 @@ If I'm only working on one task, then `todo complete` should automatically compl
 
 # Features
 
+`todo next` will suggest a Todo, and users can respond Y or N
+    * if Y, that task will be started
+    * if N, recommend the next task
+    * if D, delete the task
+
 When a dependency is completed, the downstream tasks should get Scheduled/added to my Today list
 
 `note "Here is a note about the task I'm currently working on"` should attach a note to that task object in the db
@@ -53,7 +58,6 @@ function to view current status (e.g. timer showing elapsed time on `IN_PROGRESS
 I should be able to pipe long-running command results to a Slack message
     * e.g. Slack the output of Nimbus deploy to San/Krishna without requiring me to watch the terminal and use Slack manually
 
-Add a 'todo next' command to tell me the next task I should be working on 
 
 Add time-tracking/hour-logging functionality behind a feature flag
     * pushes logged time to Jira, Github, or any other time tracking software
