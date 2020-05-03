@@ -1,31 +1,23 @@
-ID_PADDING = 3
+from marshmallow import Schema, fields, pprint
+from datetime import datetime as dt
 
 class Todo:
-    def __init__(self, **kwargs):
-        # TODO be more descriptive than kwargs; define a real model via Marshmallow
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+    def __init__(self, title):
+        self.title = title
 
-    def short_description(self):
-        """Return a concise one-line str."""
-        return f"{self._padded_id()}. {self.format_description()} {self.format_tags()}"
+    def start(self):
+        self.started_at = dt.now()
 
-    def long_description(self):
-        """Returns a multi-line description str."""
-        return f"{self.description}\n{self._padded_id()}\t{self.format_tags()}"
+class TagSchema(Schema):
+    name = fields.Str(required=True)
 
-    def format_tags(self):
-        """Return a string of formatted tags (including ASCII escape sequences)."""
-        return ''
+class TodoSchema(Schema):
+    title = fields.Str(required=True)
+    description = fields.Str()
+    started_at = fields.Date()
+    tags = fields.List(fields.Nested(TagSchema()))
 
-    def format_description(self):
-        if self.status == 2:
-            return _make_input_blink(self.description)
-        return self.description
-    
-    def _padded_id(self):
-        return str(self.id).rjust(ID_PADDING, ' ')
 
-def _make_input_blink(message):
-    return "\033[5m" + message + "\033[0m" 
-
+# t = Todo(title="finish this app")
+# t.start()
+# TodoSchema().dump(t)
