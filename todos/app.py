@@ -32,15 +32,15 @@ def create_app():
     def show(status, tag=None):
         todos = todo_service.list(status, tag)
         for todo in todos:
-            click.echo(todo.short_description())
+            click.echo(todo)
 
     @click.command()
-    @click.argument("description")
+    @click.argument("title")
     @click.option("-t", "--tags")
-    def add(description, tags=[]):
+    def add(title, tags=[]):
         """Add a todo item to the database."""
-        doc_id = todo_service.create(description, tags) 
-        click.echo(f"Inserted TODO #{doc_id}: {description}")
+        doc_id = todo_service.create(title, tags) 
+        click.echo(f"Inserted TODO #{doc_id}: {title}")
     
     @click.command()
     def then():
