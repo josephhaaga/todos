@@ -30,13 +30,13 @@ def create_cli(app):
     @click.argument("title")
     @click.option("-t", "--tags")
     def add(title, tags=[]):
-        """Add a todo item to the database."""
+        """Add a task to the database."""
         doc_id = app.todo_service.create(title, tags)
         click.echo(f"Inserted TODO #{doc_id}: {title}")
 
     @click.command()
     def then():
-        """Suggest tasks to a user, starting a todo if they respond Y."""
+        """Suggests tasks to work on next."""
         not_started_todos = app.todo_service.list("NOT_STARTED")
         for task in not_started_todos:
             response = True if input(f"Start {task}? (Y/N) ") == "Y" else False
@@ -47,31 +47,42 @@ def create_cli(app):
         pass
 
     @click.command()
+    @click.argument("task_id", type=int)
+    @click.argument("estimate_in_hours", type=float)
+    def estimate(task_id, estimate_in_hours):
+        """Set the time estimate for a task."""
+        updated_task = app.todo_service.estimate_time(task_id, estimate_in_hours)
+        click.echo(
+            f"#{task_id} is now estimate to take {updated_task.estimate_in_hours} hours."
+        )
+
+    @click.command()
     @click.argument("todo_id", type=int)
     def start(todo_id):
-        """Start working on a todo item."""
+        """Start working on task."""
         started_todo = app.todo_service.start(todo_id)
         click.echo(f"Started {started_todo}")
 
     @click.command()
     @click.argument("todo_id", type=int)
     def complete(todo_id):
-        """Finish working on a todo item."""
+        """Finish working on a task."""
         finished_todo = app.todo_service.complete(todo_id)
         click.echo(f"Finished {finished_todo}")
 
     @click.command()
     @click.argument("todo_id", type=int)
     def delete(todo_id):
-        """Delete a todo item."""
+        """Delete a task."""
         result = app.todo_service.delete(todo_id)
         if result:
             click.echo(f"Successfully deleted.")
         else:
             click.echo(f"Error occurred while deleting {todo_id}")
 
-    cli.add_command(show)
     cli.add_command(add)
+    cli.add_command(show)
+    cli.add_command(estimate)
     cli.add_command(then)
     cli.add_command(start)
     cli.add_command(complete)

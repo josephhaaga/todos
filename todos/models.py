@@ -29,9 +29,9 @@ class Todo:
     tags = []
     status = Status.NOT_STARTED.name
     estimate_in_hours = 1.0
+    id = 1
 
-    def __init__(self, title, **kwargs):
-        self.title = title
+    def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
 
@@ -42,7 +42,7 @@ class Todo:
         self.description = description
 
     def set_estimate(self, estimate):
-        self.estimate = estimate
+        self.estimate_in_hours = estimate
 
     def start(self):
         self.started_at = dt.now()
@@ -52,12 +52,11 @@ class Todo:
         self.completed_at = dt.now()
         self.status = Status.COMPLETED.name
 
-    def make_todo(self, data, **kwargs):
-        # TODO as we add more fields to Todo, we may want to consider the Builder Pattern (https://softwareengineering.stackexchange.com/a/153016)
-        todo = Todo(**data)
-
+    def __str__(self):
+        return f"#{self.task_id} {self.title} @est({self.estimate_in_hours}h)" 
 
 class TodoSchema(Schema):
+    task_id = fields.Integer()
     title = fields.Str(required=True)
     description = fields.Str()
     inserted_at = fields.Date()
@@ -65,3 +64,10 @@ class TodoSchema(Schema):
     started_at = fields.Date()
     completed_at = fields.Date()
     tags = fields.List(fields.Nested(TagSchema()))
+
+def load_todo(task):
+    task_id = task.doc_id
+    return Todo(**TodoSchema().load({**task, 'task_id': task_id}))
+
+def dump_todo(todo):
+    return TodoSchema().dump(todo)
