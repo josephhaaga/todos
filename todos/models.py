@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, pprint
+from marshmallow import Schema, fields, pprint, post_load
 from datetime import datetime as dt
 
 from enum import Enum
@@ -12,6 +12,16 @@ class Tag:
     def __init__(self, name):
         self.name = name.lower()
         self.color = random.choice(list(Colors)).name
+
+    def set_color(self, color):
+        self.color = color
+    
+    @post_load
+    def make_user(self, data, **kwargs):
+        tag = Tag(data['name'])
+        tag.set_color(data['color'])
+        return tag
+
 
 class TagSchema(Schema):
     name = fields.Str(required=True)
@@ -42,6 +52,11 @@ class Todo:
     def complete(self):
         self.completed_at = dt.now()
         self.status = Status.COMPLETED.name
+
+    def make_todo(self, data, **kwargs):
+        # TODO as we add more fields to Todo, we may want to consider the Builder Pattern (https://softwareengineering.stackexchange.com/a/153016)
+        todo = Todo(data['title'])
+        
 
 class TodoSchema(Schema):
     title = fields.Str(required=True)
