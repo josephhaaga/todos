@@ -1,5 +1,6 @@
 import click
 
+
 def add_seed_data(service):
     service.create("Add an ncurses tui to todos-app")
     service.create("Review marshmallow and plan how it can be used")
@@ -8,6 +9,7 @@ def add_seed_data(service):
     service.create("Do the Kedro spaceflights tutorial")
     service.create("Draft up a finance-app with fake data")
     service.create("install mint on thinkpad")
+
 
 def create_cli(app):
     @click.group()
@@ -29,15 +31,15 @@ def create_cli(app):
     @click.option("-t", "--tags")
     def add(title, tags=[]):
         """Add a todo item to the database."""
-        doc_id = app.todo_service.create(title, tags) 
+        doc_id = app.todo_service.create(title, tags)
         click.echo(f"Inserted TODO #{doc_id}: {title}")
-    
+
     @click.command()
     def then():
         """Suggest tasks to a user, starting a todo if they respond Y."""
         not_started_todos = app.todo_service.list("NOT_STARTED")
         for task in not_started_todos:
-            response = True if input(f"Start {task}? (Y/N) ") == 'Y' else False
+            response = True if input(f"Start {task}? (Y/N) ") == "Y" else False
             if response:
                 # TODO tech debt
                 start(task.id)
@@ -76,5 +78,3 @@ def create_cli(app):
     cli.add_command(delete)
 
     return cli()
-
-

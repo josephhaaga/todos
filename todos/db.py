@@ -1,10 +1,11 @@
 from tinydb import TinyDB, Query, where
 from functools import reduce
 
-class Database:
-    db = None 
 
-    def __init__(self, path_to_database_file = "db.json"):
+class Database:
+    db = None
+
+    def __init__(self, path_to_database_file="db.json"):
         self.db = TinyDB(path_to_database_file)
 
     def create(self, item: dict):

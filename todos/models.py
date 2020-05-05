@@ -8,34 +8,33 @@ import random
 Colors = Enum("Color", "RED GREEN YELLOW BLUE MAGENTA CYAN")
 Status = Enum("Status", "NOT_STARTED IN_PROGRESS COMPLETED")
 
-class Tag:
-    def __init__(self, name):
-        self.name = name.lower()
-        self.color = random.choice(list(Colors)).name
 
-    def set_color(self, color):
-        self.color = color
-    
+class Tag:
+    def __init__(self, name, color=None):
+        self.name = name.lower()
+        self.color = color or random.choice(list(Colors)).name
+
     @post_load
     def make_user(self, data, **kwargs):
-        tag = Tag(data['name'])
-        tag.set_color(data['color'])
-        return tag
+        return Tag(**data)
 
 
 class TagSchema(Schema):
     name = fields.Str(required=True)
     color = fields.Str()
 
+
 class Todo:
-    description = ''
+    description = ""
     tags = []
+    status = Status.NOT_STARTED.name
     estimate_in_hours = 1.0
-    def __init__(self, title):
+
+    def __init__(self, title, **kwargs):
         self.title = title
-        self.inserted_at = dt.now()
-        self.status = Status.NOT_STARTED.name
-  
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
     def add_tag(self, tag):
         self.tags += [tag]
 
@@ -44,7 +43,7 @@ class Todo:
 
     def set_estimate(self, estimate):
         self.estimate = estimate
-   
+
     def start(self):
         self.started_at = dt.now()
         self.status = Status.IN_PROGRESS.name
@@ -55,8 +54,8 @@ class Todo:
 
     def make_todo(self, data, **kwargs):
         # TODO as we add more fields to Todo, we may want to consider the Builder Pattern (https://softwareengineering.stackexchange.com/a/153016)
-        todo = Todo(data['title'])
-        
+        todo = Todo(**data)
+
 
 class TodoSchema(Schema):
     title = fields.Str(required=True)

@@ -15,22 +15,36 @@ class TodoService:
     def __init__(self, storage):
         self.storage = storage
 
+    def create(self, title=None, tags=[]) -> int:
+        """Create a Todo."""
+        todo = Todo(title, inserted_at=dt.now())
+        todo_id = self.storage.create(TodoSchema().dump(todo))
+        print(f"Created Todo #{todo_id}")
+        return todo_id
+
     def list(self, status: str = None, tag: str = None) -> List:
         """List Todos."""
         if not status and not tag:
             todos = self.storage.list()
             return [TodoSchema().load(item) for item in todos]
-        args = {'status': Status[status].value, 'tag': tag}
+        args = {"status": Status[status].value, "tag": tag}
         conditions = {k: v for k, v in args.items() if v is not None}
         todos = self.storage.find(conditions)
-        return [TodoSchema().load(item) for item in todos]
+        return [Todo(TodoSchema().load(item)) for item in todos]
 
-    def create(self, title=None, tags=[]) -> int:
-        """Create a Todo."""
-        todo = Todo(title)
-        todo_id = self.storage.create(TodoSchema().dump(todo))
-        print(f"Created Todo #{todo_id}")
-        return todo_id
+    def start(self, todo_id) -> Todo:
+        """Start working on a Todo."""
+        todo = Todo(TodoSchema().load(self.storage.get(todo_id)))
+        todo.start()
+        self.storage.update(todo_id, TodoSchema().dump(todo))
+        return todo
+
+    def complete(self, todo_id) -> Todo:
+        """Finish working on a Todo."""
+        todo = Todo(TodoSchema().load(self.storage.get(todo_id)))
+        todo.complete()
+        self.storage.update(todo_id, TodoSchema().dump(todo))
+        return todo
 
     def delete(self, todo_id) -> int:
         """Delete a Todo."""
@@ -38,16 +52,3 @@ class TodoService:
         print(f"Removed Todo #{todo_id}")
         return todo_id
 
-    def start(self, todo_id) -> Todo:
-        """Start working on a Todo."""
-        todo = TodoSchema().load(self.storage.get(todo_id))
-        todo.start()
-        self.storage.update(todo_id, TodoSchema().dump(todo))
-        return todo
-
-    def complete(self, todo_id) -> Todo:
-        """Finish working on a Todo."""
-        todo = TodoSchema().load(self.storage.get(todo_id))
-        todo.complete()
-        self.storage.update(todo_id, TodoSchema().dump(todo))
-        return todo
