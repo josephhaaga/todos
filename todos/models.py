@@ -20,6 +20,7 @@ class TagSchema(Schema):
 class Todo:
     description = ''
     tags = []
+    estimate_in_hours = 1.0
     def __init__(self, title):
         self.title = title
         self.inserted_at = dt.now()
@@ -30,6 +31,9 @@ class Todo:
 
     def set_description(self, description):
         self.description = description
+
+    def set_estimate(self, estimate):
+        self.estimate = estimate
    
     def start(self):
         self.started_at = dt.now()
@@ -43,6 +47,7 @@ class TodoSchema(Schema):
     title = fields.Str(required=True)
     description = fields.Str()
     inserted_at = fields.Date()
+    estimate_in_hours = fields.Decimal()
     started_at = fields.Date()
     completed_at = fields.Date()
     tags = fields.List(fields.Nested(TagSchema()))
