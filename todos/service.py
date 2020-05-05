@@ -1,7 +1,7 @@
 from datetime import datetime as dt
 import pytz
 from enum import Enum
-from models import Todo, TodoSchema, Tag, TagSchema
+from todos.models import Todo, TodoSchema, Tag, TagSchema
 
 Status = Enum("Status", "NOT_STARTED IN_PROGRESS COMPLETED")
 

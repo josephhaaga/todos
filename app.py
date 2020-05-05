@@ -4,8 +4,8 @@
 # Construct CLI and add functions
 # Return application instance
 
-from service import TodoService
-from db import Database
+from todos.service import TodoService
+from todos.db import Database
 
 import click
 from pathlib import Path
