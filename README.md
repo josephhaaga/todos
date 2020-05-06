@@ -1,7 +1,7 @@
 # todo
 Simple command line utility to track tasks.
 
-```python
+```sh
 $ todo
 Usage: app.py [OPTIONS] COMMAND [ARGS]...
 
