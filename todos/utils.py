@@ -2,10 +2,10 @@ import click
 
 
 def add_seed_data(service):
-    service.create("Add an ncurses tui to todos-app")
+    service.create("Add an ncurses tui to tasks-app")
     service.create("Review marshmallow and plan how it can be used")
     service.create("Read some Real Python")
-    service.create("Work on todos")
+    service.create("Work on tasks")
     service.create("Do the Kedro spaceflights tutorial")
     service.create("Draft up a finance-app with fake data")
     service.create("install mint on thinkpad")
@@ -22,21 +22,21 @@ def create_cli(app):
     @click.option("--in-progress", "status", flag_value="IN_PROGRESS")
     @click.option("--completed", "status", flag_value="COMPLETED")
     def show(status, tag=None, task_id=None) :
-        todos = app.todo_service.list(status, tag)
-        for todo in todos:
-            click.echo(todo)
+        tasks = app.todo_service.list(status, tag)
+        for task in tasks:
+            click.echo(task)
     
     @click.command()
     @click.argument("task_id", type=int)
     def get(task_id):
-        todo = app.todo_service.get(task_id)
-        click.echo(todo.get_details())
+        task = app.todo_service.get(task_id)
+        click.echo(task.get_details())
 
     @click.command()
     def now():
-        todos = app.todo_service.list("IN_PROGRESS", None)
-        for todo in todos:
-            click.echo(todo)
+        tasks = app.todo_service.list("IN_PROGRESS", None)
+        for task in tasks:
+            click.echo(task)
 
     @click.command()
     @click.argument("title")
@@ -56,13 +56,13 @@ def create_cli(app):
     @click.command()
     def then():
         """Suggests tasks to work on next."""
-        not_started_todos = app.todo_service.list("NOT_STARTED")
-        for task in not_started_todos:
+        not_started_tasks = app.todo_service.list("NOT_STARTED")
+        for task in not_started_tasks:
             response = True if input(f"Start {task}? (Y/N) ") == "Y" else False
             if response:
                 # start(task.task_id)
-                started_todo = app.todo_service.start(task.task_id)
-                click.echo(f"Started {started_todo}")
+                started_task = app.todo_service.start(task.task_id)
+                click.echo(f"Started {started_task}")
                 return
         pass
 
@@ -77,28 +77,28 @@ def create_cli(app):
         )
 
     @click.command()
-    @click.argument("todo_id", type=int)
-    def start(todo_id):
+    @click.argument("task_id", type=int)
+    def start(task_id):
         """Start working on task."""
-        started_todo = app.todo_service.start(todo_id)
-        click.echo(f"Started {started_todo}")
+        started_task = app.todo_service.start(task_id)
+        click.echo(f"Started {started_task}")
 
     @click.command()
-    @click.argument("todo_id", type=int)
-    def complete(todo_id):
+    @click.argument("task_id", type=int)
+    def complete(task_id):
         """Finish working on a task."""
-        finished_todo = app.todo_service.complete(todo_id)
-        click.echo(f"Finished {finished_todo}")
+        finished_task = app.todo_service.complete(task_id)
+        click.echo(f"Finished {finished_task}")
 
     @click.command()
-    @click.argument("todo_id", type=int)
-    def delete(todo_id):
+    @click.argument("task_id", type=int)
+    def delete(task_id):
         """Delete a task."""
-        result = app.todo_service.delete(todo_id)
+        result = app.todo_service.delete(task_id)
         if result:
             click.echo(f"Successfully deleted.")
         else:
-            click.echo(f"Error occurred while deleting {todo_id}")
+            click.echo(f"Error occurred while deleting {task_id}")
 
     cli.add_command(now)
     cli.add_command(get)
