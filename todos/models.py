@@ -53,7 +53,8 @@ class Todo:
         self.status = Status.COMPLETED.name
 
     def __str__(self):
-        return f"#{self.task_id} {self.title} @est({self.estimate_in_hours}h)" 
+        return f"#{self.task_id} {self.title} @est({self.estimate_in_hours}h)"
+
 
 class TodoSchema(Schema):
     task_id = fields.Integer()
@@ -66,9 +67,11 @@ class TodoSchema(Schema):
     completed_at = fields.Date()
     tags = fields.List(fields.Nested(TagSchema()))
 
+
 def load_todo(task):
     task_id = task.doc_id
-    return Todo(**TodoSchema().load({**task, 'task_id': task_id}))
+    return Todo(**TodoSchema().load({**task, "task_id": task_id}))
+
 
 def dump_todo(todo):
     return TodoSchema().dump(todo)

@@ -24,7 +24,7 @@ class TodoService:
         """List tasks."""
         if not status and not tag:
             # status = 'IN_PROGRESS'
-            status = 'NOT_STARTED'
+            status = "NOT_STARTED"
             # todos = self.storage.list()
             # return [load_todo(item) for item in todos]
         args = {"status": status, "tag": tag}

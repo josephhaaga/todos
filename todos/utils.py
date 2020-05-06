@@ -27,6 +27,12 @@ def create_cli(app):
             click.echo(todo)
 
     @click.command()
+    def now():
+        todos = app.todo_service.list("IN_PROGRESS", None)
+        for todo in todos:
+            click.echo(todo)
+
+    @click.command()
     @click.argument("title")
     @click.option("-t", "--tags")
     def add(title, tags=[]):
@@ -41,9 +47,10 @@ def create_cli(app):
         for task in not_started_todos:
             response = True if input(f"Start {task}? (Y/N) ") == "Y" else False
             if response:
-                # TODO tech debt
-                start(task.id)
-                return True
+                # start(task.task_id)
+                started_todo = app.todo_service.start(task.task_id)
+                click.echo(f"Started {started_todo}")
+                return
         pass
 
     @click.command()
@@ -80,6 +87,7 @@ def create_cli(app):
         else:
             click.echo(f"Error occurred while deleting {todo_id}")
 
+    cli.add_command(now)
     cli.add_command(add)
     cli.add_command(show)
     cli.add_command(estimate)
