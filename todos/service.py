@@ -23,9 +23,11 @@ class TodoService:
     def list(self, status: str = None, tag: str = None) -> List:
         """List tasks."""
         if not status and not tag:
-            todos = self.storage.list()
-            return [load_todo(item) for item in todos]
-        args = {"status": Status[status].value, "tag": tag}
+            # status = 'IN_PROGRESS'
+            status = 'NOT_STARTED'
+            # todos = self.storage.list()
+            # return [load_todo(item) for item in todos]
+        args = {"status": status, "tag": tag}
         conditions = {k: v for k, v in args.items() if v is not None}
         todos = self.storage.find(conditions)
         return [load_todo(item) for item in todos]

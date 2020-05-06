@@ -22,6 +22,9 @@ lowercase all tags and convert spaces into dashes (to standardize tags)
 
 # Features
 
+Drop into an ipython env with the service loaded so I can quickly write one-off scripts
+    * e.g. set all the tasks' status to `IN_PROGRESS`
+
 `todo start` should also accept a string, so users can add & start a task in one command
     * starting a todo with the `feat` tag should create a new branch!
 

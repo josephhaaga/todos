@@ -59,6 +59,7 @@ class TodoSchema(Schema):
     task_id = fields.Integer()
     title = fields.Str(required=True)
     description = fields.Str()
+    status = fields.Str()
     inserted_at = fields.Date()
     estimate_in_hours = fields.Decimal()
     started_at = fields.Date()
