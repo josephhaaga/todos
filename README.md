@@ -2,6 +2,45 @@
 Simple command line utility to track tasks.
 
 ```sh
+$ todo add "clean up README"
+Created task #9
+Inserted TODO #9: clean up README 
+
+$ todo start 9
+Started #9 clean up README @est(1.0h)
+
+$ todo show
+#1 complete tag functionality @est(1.0h)
+#4 Add pre-commit @est(1.0h)
+#5 fill_calendar() @est(1.0h)
+#6 Log Shape idea @est(1.0h)
+#7 add note functionality @est(1.0h)
+#8 update README @est(1.0h)
+
+$ todo get 9 
+
+        #9 clean up README
+            status: IN_PROGRESS
+            estimate: 1.0h
+            inserted: 2020-05-05
+            location: /Users/josephhaaga/Documents/code/todo-app
+        
+$ todo complete 9
+Finished #9 clean up README @est(1.0h)
+
+$ todo get 9
+
+        #9 clean up README
+            status: COMPLETED
+            estimate: 1.0h
+            inserted: 2020-05-05
+            location: /Users/josephhaaga/Documents/code/todo-app
+        
+
+```
+
+## Usage
+```sh
 $ todo
 Usage: app.py [OPTIONS] COMMAND [ARGS]...
 
