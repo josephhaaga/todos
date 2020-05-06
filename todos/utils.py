@@ -100,12 +100,14 @@ def create_cli(app):
         else:
             click.echo(f"Error occurred while deleting {task_id}")
 
-    cli.add_command(now)
-    cli.add_command(get)
-    cli.add_command(add)
+    
     cli.add_command(show)
-    cli.add_command(estimate)
+    cli.add_command(get)
+    cli.add_command(now)
+    cli.add_command(add)
+    cli.add_command(note)
     cli.add_command(then)
+    cli.add_command(estimate)
     cli.add_command(start)
     cli.add_command(complete)
     cli.add_command(delete)
