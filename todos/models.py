@@ -23,14 +23,12 @@ class TagSchema(Schema):
     name = fields.Str(required=True)
     color = fields.Str()
 
-
 class Todo:
     description = ""
     tags = []
     status = Status.NOT_STARTED.name
     estimate_in_hours = 1.0
     location = ""
-    id = 1
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
