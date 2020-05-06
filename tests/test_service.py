@@ -19,6 +19,10 @@ class TestTodoService:
         task_id = db_backed_service.create("Some task")
         assert task_id == 1
 
+    def test_get(self, db_backed_service):
+        task = db_backed_service.get(1)
+        assert task.task_id == 1
+
     def test_list(self, db_backed_service):
         tasks = db_backed_service.list()
         assert (len(tasks)) == 1

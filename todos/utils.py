@@ -47,6 +47,13 @@ def create_cli(app):
         click.echo(f"Inserted TODO #{doc_id}: {title}")
 
     @click.command()
+    @click.argument("task_id", type=int)
+    @click.argument("note", type=str)
+    def note(task_id, note):
+        # TODO service function to add a note to the task
+        pass
+
+    @click.command()
     def then():
         """Suggests tasks to work on next."""
         not_started_todos = app.todo_service.list("NOT_STARTED")
