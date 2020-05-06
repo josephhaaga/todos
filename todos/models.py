@@ -29,6 +29,7 @@ class Todo:
     tags = []
     status = Status.NOT_STARTED.name
     estimate_in_hours = 1.0
+    location = ""
     id = 1
 
     def __init__(self, **kwargs):
@@ -55,11 +56,21 @@ class Todo:
     def __str__(self):
         return f"#{self.task_id} {self.title} @est({self.estimate_in_hours}h)"
 
+    def get_details(self):
+        return f"""
+        #{self.task_id} {self.title}
+            status: {self.status}
+            estimate: {self.estimate_in_hours}h
+            inserted: {self.inserted_at}
+            location: {self.location}
+        """
+
 
 class TodoSchema(Schema):
     task_id = fields.Integer()
     title = fields.Str(required=True)
     description = fields.Str()
+    location = fields.Str()
     status = fields.Str()
     inserted_at = fields.Date()
     estimate_in_hours = fields.Decimal()

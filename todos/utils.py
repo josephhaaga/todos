@@ -21,10 +21,16 @@ def create_cli(app):
     @click.option("--not-started", "status", flag_value="NOT_STARTED")
     @click.option("--in-progress", "status", flag_value="IN_PROGRESS")
     @click.option("--completed", "status", flag_value="COMPLETED")
-    def show(status, tag=None):
+    def show(status, tag=None, task_id=None) :
         todos = app.todo_service.list(status, tag)
         for todo in todos:
             click.echo(todo)
+    
+    @click.command()
+    @click.argument("task_id", type=int)
+    def get(task_id):
+        todo = app.todo_service.get(task_id)
+        click.echo(todo.get_details())
 
     @click.command()
     def now():
@@ -88,6 +94,7 @@ def create_cli(app):
             click.echo(f"Error occurred while deleting {todo_id}")
 
     cli.add_command(now)
+    cli.add_command(get)
     cli.add_command(add)
     cli.add_command(show)
     cli.add_command(estimate)

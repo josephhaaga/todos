@@ -1,6 +1,7 @@
 from datetime import datetime as dt
 from enum import Enum
 from typing import List
+from os import getcwd
 
 import pytz
 
@@ -15,18 +16,20 @@ class TodoService:
 
     def create(self, title=None, tags=[]) -> int:
         """Create a task."""
-        todo = Todo(title=title, inserted_at=dt.now())
+        current_directory = getcwd()
+        todo = Todo(title=title, inserted_at=dt.now(), location=current_directory)
         todo_id = self.storage.create(dump_todo(todo))
         print(f"Created task #{todo_id}")
         return todo_id
 
+    def get(self, task_id: int):
+        task = self.storage.get(task_id)
+        return load_todo(task)
+
     def list(self, status: str = None, tag: str = None) -> List:
         """List tasks."""
         if not status and not tag:
-            # status = 'IN_PROGRESS'
             status = "NOT_STARTED"
-            # todos = self.storage.list()
-            # return [load_todo(item) for item in todos]
         args = {"status": status, "tag": tag}
         conditions = {k: v for k, v in args.items() if v is not None}
         todos = self.storage.find(conditions)
