@@ -4,6 +4,7 @@ from datetime import datetime as dt
 from enum import Enum
 import random
 
+from todos.utils import pretty_print_date
 
 Colors = Enum("Color", "RED GREEN YELLOW BLUE MAGENTA CYAN")
 Status = Enum("Status", "NOT_STARTED IN_PROGRESS COMPLETED")
@@ -26,13 +27,17 @@ class TagSchema(Schema):
 
 
 class Note:
-     def __init__(self, **kwargs):
+    def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
 
+    def pretty_print(self):
+        return f"[{pretty_print_date(self.inserted_at)}] - {self.content}"
+
+
 class NoteSchema(Schema):
     content = fields.Str()
-    inserted_at = fields.Date()
+    inserted_at = fields.DateTime()
 
 
 class Todo:
@@ -71,12 +76,18 @@ class Todo:
         return f"#{self.task_id} {self.title} @est({self.estimate_in_hours}h)"
 
     def get_details(self):
+        note_strings = "\n".join(
+            ["\t" * 2 + Note(**n).pretty_print() for n in self.notes]
+        )
         return f"""
-        #{self.task_id} {self.title}
-            status: {self.status}
-            estimate: {self.estimate_in_hours}h
-            inserted: {self.inserted_at}
-            location: {self.location}
+    #{self.task_id} {self.title}
+        status: {self.status}
+        estimate: {self.estimate_in_hours}h
+        inserted: {self.inserted_at}
+        location: {self.location}
+
+        notes
+{note_strings}
         """
 
 
@@ -86,10 +97,10 @@ class TodoSchema(Schema):
     description = fields.Str()
     location = fields.Str()
     status = fields.Str()
-    inserted_at = fields.Date()
+    inserted_at = fields.DateTime()
     estimate_in_hours = fields.Decimal()
-    started_at = fields.Date()
-    completed_at = fields.Date()
+    started_at = fields.DateTime()
+    completed_at = fields.DateTime()
     tags = fields.List(fields.Nested(TagSchema()))
     notes = fields.List(fields.Nested(NoteSchema()))
 
@@ -97,6 +108,7 @@ class TodoSchema(Schema):
 def load_todo(task):
     task_id = task.doc_id
     return Todo(**TodoSchema().load({**task, "task_id": task_id}))
+
 
 def dump_todo(todo):
     return TodoSchema().dump(todo)

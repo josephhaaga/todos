@@ -21,7 +21,7 @@ class TestTodoService:
 
     def test_note(self, db_backed_service):
         db_backed_service.note(1, "This is an example note")
-        assert db_backed_service.get(1).notes[0]['content'] == "This is an example note"
+        assert db_backed_service.get(1).notes[0]["content"] == "This is an example note"
 
     def test_get(self, db_backed_service):
         task = db_backed_service.get(1)

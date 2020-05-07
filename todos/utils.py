@@ -1,4 +1,10 @@
+import datetime
+
 import click
+
+
+def pretty_print_date(datestamp: datetime.datetime):
+    return datestamp.strftime("%h %d, %Y %l:%M %p")
 
 
 def add_seed_data(service):
@@ -26,7 +32,7 @@ def create_cli(app):
         tasks = app.todo_service.list(status, tag)
         for task in tasks:
             click.echo(task)
-    
+
     @click.command()
     @click.argument("task_id", type=int)
     def get(task_id):
@@ -104,7 +110,6 @@ def create_cli(app):
         else:
             click.echo(f"Error occurred while deleting {task_id}")
 
-    
     cli.add_command(show)
     cli.add_command(get)
     cli.add_command(now)
