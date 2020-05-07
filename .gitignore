@@ -1,2 +1,5 @@
 db.json
 .pytest_cache
+build/
+dist/
+*egg-info/
