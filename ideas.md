@@ -1,6 +1,3 @@
-Sort ideas by expected lift
-    * larger efforts should be `feat/` branches, and I should perform code reviews to prevent quality degredation (which is currently biting me in the ass)
-
 # Project Structure
 
 Database class should allow us to dynamically construct queries (https://stackoverflow.com/a/30531801)
