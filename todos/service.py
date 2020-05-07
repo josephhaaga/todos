@@ -15,19 +15,22 @@ class TodoService:
         self.storage = storage
 
     def create(self, title=None, tags=[]) -> int:
-        """Create a task."""
         current_directory = getcwd()
-        todo = Todo(title=title, inserted_at=dt.now(), location=current_directory)
-        todo_id = self.storage.create(dump_todo(todo))
-        print(f"Created task #{todo_id}")
-        return todo_id
+        task = Todo(title=title, inserted_at=dt.now(), location=current_directory)
+        task_id = self.storage.create(dump_todo(task))
+        return task_id
+
+    def note(self, task_id: int, note: str):
+        todo = load_todo(self.storage.get(task_id))
+        todo.add_note(note)
+        self.storage.update(task_id, dump_todo(todo))
+        return task_id
 
     def get(self, task_id: int):
         task = self.storage.get(task_id)
         return load_todo(task)
 
     def list(self, status: str = None, tag: str = None) -> List:
-        """List tasks."""
         if not status and not tag:
             status = "NOT_STARTED"
         args = {"status": status, "tag": tag}
@@ -36,28 +39,23 @@ class TodoService:
         return [load_todo(item) for item in todos]
 
     def estimate_time(self, todo_id: int, estimate_in_hours: float):
-        """Estimate how long a task will take."""
         todo = load_todo(self.storage.get(todo_id))
         todo.set_estimate(estimate_in_hours)
         self.storage.update(todo_id, dump_todo(todo))
         return todo
 
     def start(self, todo_id) -> Todo:
-        """Start working on a task."""
         todo = load_todo(self.storage.get(todo_id))
         todo.start()
         self.storage.update(todo_id, dump_todo(todo))
         return todo
 
     def complete(self, todo_id) -> Todo:
-        """Finish working on a task."""
         todo = load_todo(self.storage.get(todo_id))
         todo.complete()
         self.storage.update(todo_id, dump_todo(todo))
         return todo
 
     def delete(self, todo_id) -> int:
-        """Delete a task."""
         self.storage.delete(todo_id)
-        print(f"Removed Todo #{todo_id}")
         return todo_id

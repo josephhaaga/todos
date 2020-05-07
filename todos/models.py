@@ -15,7 +15,8 @@ class Tag:
         self.color = color or random.choice(list(Colors)).name
 
     @post_load
-    def make_user(self, data, **kwargs):
+    def make_tag(self, data, **kwargs):
+        # TODO this may be redundant due to the constructor
         return Tag(**data)
 
 
@@ -23,9 +24,21 @@ class TagSchema(Schema):
     name = fields.Str(required=True)
     color = fields.Str()
 
+
+class Note:
+     def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+class NoteSchema(Schema):
+    content = fields.Str()
+    inserted_at = fields.Date()
+
+
 class Todo:
     description = ""
     tags = []
+    notes = []
     status = Status.NOT_STARTED.name
     estimate_in_hours = 1.0
     location = ""
@@ -36,6 +49,9 @@ class Todo:
 
     def add_tag(self, tag):
         self.tags += [tag]
+
+    def add_note(self, note):
+        self.notes += [Note(content=note, inserted_at=dt.now())]
 
     def set_description(self, description):
         self.description = description
@@ -75,12 +91,12 @@ class TodoSchema(Schema):
     started_at = fields.Date()
     completed_at = fields.Date()
     tags = fields.List(fields.Nested(TagSchema()))
+    notes = fields.List(fields.Nested(NoteSchema()))
 
 
 def load_todo(task):
     task_id = task.doc_id
     return Todo(**TodoSchema().load({**task, "task_id": task_id}))
-
 
 def dump_todo(todo):
     return TodoSchema().dump(todo)
