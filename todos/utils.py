@@ -21,7 +21,8 @@ def create_cli(app):
     @click.option("--not-started", "status", flag_value="NOT_STARTED")
     @click.option("--in-progress", "status", flag_value="IN_PROGRESS")
     @click.option("--completed", "status", flag_value="COMPLETED")
-    def show(status, tag=None, task_id=None) :
+    def show(status, tag=None, task_id=None):
+        """List all tasks."""
         tasks = app.todo_service.list(status, tag)
         for task in tasks:
             click.echo(task)
@@ -29,11 +30,13 @@ def create_cli(app):
     @click.command()
     @click.argument("task_id", type=int)
     def get(task_id):
+        """Show details about a task."""
         task = app.todo_service.get(task_id)
         click.echo(task.get_details())
 
     @click.command()
     def now():
+        """List tasks currently IN_PROGRESS."""
         tasks = app.todo_service.list("IN_PROGRESS", None)
         for task in tasks:
             click.echo(task)
@@ -42,16 +45,17 @@ def create_cli(app):
     @click.argument("title")
     @click.option("-t", "--tags")
     def add(title, tags=[]):
-        """Add a task to the database."""
+        """Add a task."""
         doc_id = app.todo_service.create(title, tags)
-        click.echo(f"Inserted TODO #{doc_id}: {title}")
+        click.echo(f"Inserted task #{doc_id}: {title}")
 
     @click.command()
     @click.argument("task_id", type=int)
     @click.argument("note", type=str)
     def note(task_id, note):
-        # TODO service function to add a note to the task
-        pass
+        """Add a note to a task."""
+        doc_id = app.todo_service.note(task_id, note)
+        click.echo(f"Added note to task #{task_id}")
 
     @click.command()
     def then():
