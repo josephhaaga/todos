@@ -68,7 +68,7 @@ def create_cli(app):
         """Suggests tasks to work on next."""
         not_started_tasks = app.todo_service.list("NOT_STARTED")
         for task in not_started_tasks:
-            response = True if input(f"Start {task}? (Y/N) ") == "Y" else False
+            response = True if input(f"Start {task}? (Y/N) ").upper() == "Y" else False
             if response:
                 # start(task.task_id)
                 started_task = app.todo_service.start(task.task_id)
