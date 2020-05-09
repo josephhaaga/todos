@@ -4,3 +4,6 @@ t:
 build:
 	python3 setup.py sdist bdist_wheel
 	twine check dist/*
+
+freeze:
+	pip freeze > requirements.txt
