@@ -3,3 +3,6 @@ db.json
 build/
 dist/
 *egg-info/
+venv
+venv/
+venv/*
