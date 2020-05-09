@@ -98,7 +98,7 @@ class TodoSchema(Schema):
     location = fields.Str()
     status = fields.Str()
     inserted_at = fields.DateTime()
-    estimate_in_hours = fields.Decimal()
+    estimate_in_hours = fields.Float()
     started_at = fields.DateTime()
     completed_at = fields.DateTime()
     tags = fields.List(fields.Nested(TagSchema()))
