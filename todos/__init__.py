@@ -1,3 +1,5 @@
+"""Necessary for packaging."""
+
 # __init__.py
 
 # Version of the jhaaga-todos package

@@ -1,21 +1,15 @@
-# Application Factory
-# Set up DB
-# Set up Service with connection to DB
-# Construct CLI and add functions
-# Return application instance
+"""Application factory."""
+from pathlib import Path
+from os import path
 
 from todos.service import TodoService
 from todos.db import Database
 from todos.utils import create_cli
 
-from pathlib import Path
-from os import path
-
 
 def create_app():
-    # Create or open instance folder, and pass to Database
-    home = str(Path.home())
-    app_instance_directory = path.join(home, ".todos")
+    """Creates and returns an instance of the application."""
+    app_instance_directory = path.join(Path.home(), ".todos")
     Path(app_instance_directory).mkdir(parents=True, exist_ok=True)
 
     path_to_db_file = path.join(app_instance_directory, "db.json")
@@ -26,5 +20,5 @@ def create_app():
 
 
 if __name__ == "__main__":
-    app = create_app()
-    create_cli(app)
+    App = create_app()
+    create_cli(App)
