@@ -1,3 +1,4 @@
+"""Random utility functions related to the Todo app."""
 import datetime
 
 import click
@@ -60,7 +61,7 @@ def create_cli(app):
     @click.argument("note", type=str)
     def note(task_id, note):
         """Add a note to a task."""
-        doc_id = app.todo_service.note(task_id, note)
+        app.todo_service.note(task_id, note)
         click.echo(f"Added note to task #{task_id}")
 
     @click.command()
@@ -68,9 +69,9 @@ def create_cli(app):
         """Suggests tasks to work on next."""
         not_started_tasks = app.todo_service.list("NOT_STARTED")
         for task in not_started_tasks:
-            response = True if input(f"Start {task}? (Y/N) ").upper() == "Y" else False
+            user_response = input(f"Start {task}? (Y/N) ").upper()
+            response = True if user_response == "Y" else False
             if response:
-                # start(task.task_id)
                 started_task = app.todo_service.start(task.task_id)
                 click.echo(f"Started {started_task}")
                 return
@@ -83,7 +84,7 @@ def create_cli(app):
         """Set the time estimate for a task."""
         updated_task = app.todo_service.estimate_time(task_id, estimate_in_hours)
         click.echo(
-            f"#{task_id} is now estimate to take {updated_task.estimate_in_hours} hours."
+            f"#{task_id} estimate set to {updated_task.estimate_in_hours} hours."
         )
 
     @click.command()
