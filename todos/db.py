@@ -1,9 +1,8 @@
 """Interface and implementation providing database functionality."""
 from functools import reduce
-from typing import int, List
+from typing import List
 
 from tinydb import TinyDB, where
-from todos.models import Todo
 
 
 class Database:
@@ -30,7 +29,7 @@ class Database:
         built_query = reduce(lambda a, b: a & b, terms)
         return self.db.search(built_query)
 
-    def get(self, document_id: int) -> Todo:
+    def get(self, document_id: int) -> dict:
         """Retrieve an item from the database."""
         return self.db.get(doc_id=document_id)
 
