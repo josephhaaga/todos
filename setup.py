@@ -18,10 +18,5 @@ setup(
     packages=["todos"],
     include_package_data=True,
     install_requires=["tinydb", "click"],
-    entry_points={
-        "console_scripts": [
-            "todo=todos.__main__:main",
-        ]
-    },
+    entry_points={"console_scripts": ["todo=todos.__main__:main",]},
 )
-
