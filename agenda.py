@@ -5,7 +5,7 @@ rows, columns = os.popen("stty size", "r").read().split()
 TERMINAL_WIDTH = int(columns)
 
 DAY_START = 6
-DAY_END = 22
+DAY_END = 21
 
 
 def generate_times(increment_in_minutes=15):
