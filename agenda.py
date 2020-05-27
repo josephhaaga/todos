@@ -41,6 +41,8 @@ class Agenda:
     def print_agenda(self):
         print(self.day.strftime("%A %B %-m, %Y").center(TERMINAL_WIDTH // 2))
         for time, events in self.events.items():
+            # TODOs should be printed in a different color than actual calendar events
+            # current event/todo should blink!
             print(f'{time.strftime("%H:%M")} {", ".join(events)}')
 
     def fill_with_todos(self):
@@ -72,9 +74,12 @@ def main():
             },
         },
     ]
+
     a = Agenda()
     a.populate_events(calendar_events)
     a.print_agenda()
+
+    todos = {}
 
 
 if __name__ == "__main__":
