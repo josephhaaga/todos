@@ -39,41 +39,41 @@ class CalendarEvent:
 class Agenda:
     day = datetime.datetime.now()
     agenda = {time: [] for time in generate_times(DAY_START, DAY_END)}
+    events = []
     event_count = 0
     todo_count = 0
 
+    def add_event(self, event: CalendarEvent) -> None:
+        start = event.start_time
+        end = event.end_time
+        times_spent_in_event = generate_times(start, end)
+        for time in times_spent_in_event:
+            self.agenda[time] += [event]
+        self.events += [event]
+
     def populate_events(self, calendar_events=[]):
-        # TODO refactor this; it does not overwrite agenda completely, meaning subsequent calls to populate_events will corrupt the data
-        # either make it declarative (pass in all events), or convert to add_event()
         for event in calendar_events:
-            # If an event doesn't start on 0, 15, 30, 45, will it still show up?
-            event_start_time = event.start_time
-            event_end_time = event.end_time
-            times_spent_in_event = generate_times(event_start_time, event_end_time)
-            for time in times_spent_in_event:
-                self.agenda[time] += [event.summary]
-        self.event_count = len(calendar_events)
-        self.calendar_events = calendar_events
+            self.add_event(event)
 
     def print_agenda(self):
         print(self.day.strftime("%A %B %-m, %Y").center(TERMINAL_WIDTH // 2))
         for time, events in self.agenda.items():
             # TODOs should be printed in a different color than actual calendar events
             # current event/todo should blink!
-            print(f'{time.strftime("%H:%M")} {", ".join(events)}')
+            print(
+                f'{time.strftime("%H:%M")} {", ".join([event.summary for event in events])}'
+            )
         self.print_summary()
 
     def print_summary(self):
         print(
-            f"You have {self.event_count} meetings today, totalling {self.calculate_total_time_in_meetings()}."
+            f"You have {len(self.events)} meetings today, totalling {self.calculate_total_time_in_meetings()}."
         )
         print(f"This leaves you with {self.calculate_free_time()} free time.")
 
     def calculate_total_time_in_meetings(self):
         return datetime.timedelta(
-            seconds=sum(
-                [event.get_duration().seconds for event in self.calendar_events]
-            )
+            seconds=sum([event.get_duration().total_seconds() for event in self.events])
         )
 
     def calculate_free_time(self):
@@ -81,9 +81,48 @@ class Agenda:
         minutes_in_meetings = self.calculate_total_time_in_meetings()
         return minutes_in_day - minutes_in_meetings
 
+    def get_blocks_of_free_time(self):
+        free_time_blocks = []
+        current_free_time_block = False
+        today = self.day
+        for time, events in self.agenda.items():
+            if len(events) <= 0:
+                if not current_free_time_block:
+                    current_free_time_block = time
+            else:
+                if current_free_time_block:
+                    end = today.replace(hour=time.hour, minute=time.minute)
+                    start = today.replace(
+                        hour=current_free_time_block.hour,
+                        minute=current_free_time_block.minute,
+                    )
+                    block_duration = end - start
+                    free_time_blocks += [{"start": start, "duration": block_duration}]
+                    current_free_time_block = False
+        return free_time_blocks
+
     def fill_with_todos(self, todos: List):
-        prioritizing_function = lambda x, y: 1
-        todos_in_priority_order = sorted(todos, prioritizing_function)
+        print(
+            f"Filling {self.calculate_free_time()} minutes of free time with Todo items"
+        )
+        blocks_of_free_time = self.get_blocks_of_free_time()
+        items_added_to_agenda = 0
+        for todo in todos:
+            print(f"{todo}")
+            for block in blocks_of_free_time:
+                print(f" {block}")
+                block_duration_in_hours = block["duration"].seconds // 3600
+                if todo.estimate_in_hours < block_duration_in_hours:
+                    self.add_event(
+                        CalendarEvent(
+                            summary=todo.title,
+                            start_time=block["start"],
+                            end_time=block["start"] + block["duration"],
+                        )
+                    )
+                    items_added_to_agenda += 1
+                    todos.remove(todo)
+        print(f"Added {items_added_to_agenda} todo items to today's agenda")
 
 
 def main():
@@ -103,8 +142,13 @@ def main():
     a.populate_events(calendar_events)
     a.print_agenda()
 
-    app = create_app()
-    todos = app.todo_service.list()
+    blocks = a.get_blocks_of_free_time()
+
+    # app = create_app()
+    # todos = app.todo_service.list()
+
+    # a.fill_with_todos(todos)
+    # a.print_agenda()
 
 
 if __name__ == "__main__":
