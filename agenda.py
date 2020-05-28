@@ -18,9 +18,9 @@ def generate_times(
 ):
     """Returns a list of datetimes."""
     results = []
-    for hour in range(end_time.hour, start_time.hour, -1):
+    for hour in range(end_time.hour, start_time.hour - 1, -1):
         results += [
-            datetime.time(hour=hour, minute=timestamp)
+            datetime.datetime.now().replace(hour=hour, minute=timestamp)
             for timestamp in reversed(range(0, 60, increment_in_minutes))
         ]
     return reversed(results)
@@ -35,20 +35,18 @@ class CalendarEvent:
     def get_duration(self) -> datetime.timedelta:
         return self.end_time - self.start_time
 
+    def happens_at(self, time: datetime.datetime) -> bool:
+        if self.start_time <= time and self.end_time >= time:
+            return True
+        return False
+
 
 class Agenda:
     day = datetime.datetime.now()
-    agenda = {time: [] for time in generate_times(DAY_START, DAY_END)}
     events = []
-    event_count = 0
-    todo_count = 0
+    free_time_blocks = []
 
     def add_event(self, event: CalendarEvent) -> None:
-        start = event.start_time
-        end = event.end_time
-        times_spent_in_event = generate_times(start, end)
-        for time in times_spent_in_event:
-            self.agenda[time] += [event]
         self.events += [event]
 
     def populate_events(self, calendar_events=[]):
@@ -57,12 +55,15 @@ class Agenda:
 
     def print_agenda(self):
         print(self.day.strftime("%A %B %-m, %Y").center(TERMINAL_WIDTH // 2))
-        for time, events in self.agenda.items():
-            # TODOs should be printed in a different color than actual calendar events
-            # current event/todo should blink!
+        times = generate_times(DAY_START, DAY_END)
+        for time in times:
+            events_occurring_at_this_time = [
+                event for event in self.events if event.happens_at(time)
+            ]
             print(
-                f'{time.strftime("%H:%M")} {", ".join([event.summary for event in events])}'
+                f'{time.strftime("%H:%M")} {", ".join([event.summary for event in events_occurring_at_this_time])}'
             )
+
         self.print_summary()
 
     def print_summary(self):
@@ -76,30 +77,13 @@ class Agenda:
             seconds=sum([event.get_duration().total_seconds() for event in self.events])
         )
 
-    def calculate_free_time(self):
+    def calculate_free_time(self) -> int:
         minutes_in_day = DAY_END - DAY_START
         minutes_in_meetings = self.calculate_total_time_in_meetings()
         return minutes_in_day - minutes_in_meetings
 
-    def get_blocks_of_free_time(self):
-        free_time_blocks = []
-        current_free_time_block = False
-        today = self.day
-        for time, events in self.agenda.items():
-            if len(events) <= 0:
-                if not current_free_time_block:
-                    current_free_time_block = time
-            else:
-                if current_free_time_block:
-                    end = today.replace(hour=time.hour, minute=time.minute)
-                    start = today.replace(
-                        hour=current_free_time_block.hour,
-                        minute=current_free_time_block.minute,
-                    )
-                    block_duration = end - start
-                    free_time_blocks += [{"start": start, "duration": block_duration}]
-                    current_free_time_block = False
-        return free_time_blocks
+    def get_blocks_of_free_time(self) -> List:
+        return self.free_time_blocks
 
     def fill_with_todos(self, todos: List):
         print(
@@ -133,10 +117,10 @@ def main():
     )
     six_pm = datetime.datetime.now().replace(hour=18, minute=0, second=0, microsecond=0)
 
-    calendar_events = [
-        CalendarEvent("Some calendar event", nine_am, noon),
-        CalendarEvent("Another calendar event", three_pm, six_pm),
-    ]
+    morning_meeting = CalendarEvent("Some calendar event", nine_am, noon)
+    afternoon_meeting = CalendarEvent("Another calendar event", three_pm, six_pm)
+
+    calendar_events = [morning_meeting, afternoon_meeting]
 
     a = Agenda()
     a.populate_events(calendar_events)
@@ -144,11 +128,11 @@ def main():
 
     blocks = a.get_blocks_of_free_time()
 
-    # app = create_app()
-    # todos = app.todo_service.list()
+    app = create_app()
+    todos = app.todo_service.list()
 
-    # a.fill_with_todos(todos)
-    # a.print_agenda()
+    a.fill_with_todos(todos)
+    a.print_agenda()
 
 
 if __name__ == "__main__":
