@@ -55,7 +55,7 @@ def create_cli(app):
     @click.command()
     @click.argument("title")
     @click.option("-t", "--tags")
-    def add(title):
+    def add(title, tags=None):
         """Add a task."""
         doc_id = app.todo_service.create(title)
         click.echo(f"Inserted task #{doc_id}: {title}")
