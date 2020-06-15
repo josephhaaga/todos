@@ -6,7 +6,7 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setup(
-    name="jhaaga-todos",
+    name="todos",
     version="1.0.0",
     description="Manage tasks from the command line",
     long_description=README,

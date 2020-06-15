@@ -19,6 +19,10 @@ def create_app():
     return app
 
 
-if __name__ == "__main__":
+def main():
     App = create_app()
     create_cli(App)
+
+
+if __name__ == "__main__":
+    main()
