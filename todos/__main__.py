@@ -2,7 +2,8 @@
 from pathlib import Path
 from os import path
 
-from todos.service import TodoService
+from todos.services.TodoService import TodoService
+from todos.services.AgendaService import AgendaService
 from todos.db import Database
 from todos.utils import create_cli
 
@@ -15,7 +16,9 @@ def create_app():
     path_to_db_file = path.join(app_instance_directory, "db.json")
 
     app = type("App", (), {})
-    app.todo_service = TodoService(Database(path_to_db_file))
+    app.db = Database(path_to_db_file)
+    app.todo_service = TodoService(app.db)
+    app.agenda_service = AgendaService(app)
     return app
 
 

@@ -3,6 +3,32 @@ import datetime
 from typing import List, Union
 
 
+class AgendaService:
+    """Provides Agenda functionality."""
+
+    app = None
+    storage = None
+
+    def __init__(self, app):
+        self.app = app
+        self.storage = app.db
+
+    def run(self):
+        now = datetime.datetime.now()
+        nine_am = now.replace(hour=9, minute=0, second=0, microsecond=0)
+        noon = now.replace(hour=12, minute=0, second=0, microsecond=0)
+
+        event = CalendarEvent("a meeting", nine_am, noon)
+
+        agenda = Agenda()
+        agenda.add_event(event)
+
+        todos = self.app.todo_service.list()
+        #        agenda.fill_free_time_with_todos(todos)
+
+        breakpoint()
+
+
 @dataclass
 class TimeBlock:
     start: datetime.datetime = None
@@ -76,11 +102,13 @@ def main():
 
     event = CalendarEvent("a meeting", nine_am, noon)
 
-    # agenda = Agenda()
-    # agenda.add_event(event)
+    agenda = Agenda()
+    agenda.add_event(event)
 
-    # todos = todo_service.list()
+    todos = todo_service.list()
     # agenda.fill_free_time_with_todos(todos)
+
+    breakpoint()
 
 
 if __name__ == "__main__":

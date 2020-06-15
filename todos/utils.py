@@ -109,6 +109,10 @@ def create_cli(app):
         app.todo_service.delete(task_id)
         click.echo(f"Successfully deleted.")
 
+    @click.command()
+    def agenda():
+        app.agenda_service.run()
+
     cli.add_command(show)
     cli.add_command(get)
     cli.add_command(now)
@@ -119,5 +123,6 @@ def create_cli(app):
     cli.add_command(start)
     cli.add_command(complete)
     cli.add_command(delete)
+    cli.add_command(agenda)
 
     return cli()
