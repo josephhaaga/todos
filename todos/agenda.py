@@ -14,6 +14,12 @@ class TimeBlock:
     def contains_time(self, time: datetime.datetime) -> bool:
         return time <= self.end and time >= self.start
 
+    @classmethod
+    def from_timedelta(
+        cls, start: datetime.datetime, duration: datetime.timedelta
+    ) -> "TimeBlock":
+        raise NotImplementedError
+
 
 class CalendarEvent:
     time: TimeBlock
@@ -45,6 +51,22 @@ class Agenda:
     def add_event(self, event: CalendarEvent):
         self.events += [event]
         # update `free_time`
+
+    def fill_todos(todo_list):
+        for task in todo_list:
+            estimated_duration = task.estimate_in_hours
+            if self.has_free_time_block(estimated_duration):
+                time_block_for_event = self.get_free_time_block(estimated_duration)
+                start = time_block_for_event.start
+                end = time_block_for_event.end
+                event_for_task = CalendarEvent(start=start, end=end)
+                self.add_event(event_for_task)
+
+    def has_free_time_block(duration: datetime.timedelta) -> bool:
+        raise NotImplementedError
+
+    def get_free_time_block(duration: datetime.timedelta) -> TimeBlock:
+        raise NotImplemenetedError
 
 
 def main():
